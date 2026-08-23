@@ -12,6 +12,28 @@
   - 🐉 Pets (5 types: Wolf, Dragon, Phoenix, Guardian, Knight Horse)
 - 📊 **Discord Rich Presence** - Show your status on Discord
 - 🎮 **Minecraft Launcher** - Supports 1.20.1 and configurable versions
+- 🌐 **Web Dashboard** - Manage cosmetics via web panel
+- ⚙️ **REST API** - Full API for cosmetic management
+
+## 🚀 Quick Start
+
+### 1️⃣ Build
+```bash
+git clone https://github.com/dawiofejm-hue/HYPE-CLIENT.git
+cd HYPE-CLIENT
+mvn clean package
+```
+
+### 2️⃣ Run
+```bash
+java -jar target/hype-client-1.0.0.jar
+```
+
+### 3️⃣ Launch
+- Open HYPE CLIENT GUI
+- Login with Microsoft or Offline
+- Equip cosmetics
+- Click **▶️ LAUNCH MINECRAFT**
 
 ## 🔧 Installation
 
@@ -19,20 +41,7 @@
 - Java 11 or higher
 - Maven 3.6+
 - Discord (running for RPC features)
-
-### Build
-
-```bash
-git clone https://github.com/dawiofejm-hue/HYPE-CLIENT.git
-cd HYPE-CLIENT
-mvn clean package
-```
-
-### Run
-
-```bash
-java -jar target/hype-client-1.0.0.jar
-```
+- Browser (for web dashboard - optional)
 
 ## 📖 Usage
 
@@ -62,6 +71,16 @@ java -jar target/hype-client-1.0.0.jar
 2. Click **▶️ LAUNCH MINECRAFT**
 3. Your status will appear on Discord: "Playing HYPE CLIENT"
 
+## 🌐 Web Dashboard
+
+Access the web panel at: **http://localhost:3000**
+
+Features:
+- 👥 Manage players
+- 🎨 Equip/unequip cosmetics
+- 📊 View active cosmetics
+- 🔍 Search and filter
+
 ## 📊 Discord Integration
 
 When you launch Minecraft through HYPE CLIENT:
@@ -69,27 +88,66 @@ When you launch Minecraft through HYPE CLIENT:
 - Details include: Username, Server, and equipped cosmetics
 - Example: `Playing as Player123 | 🪶 Angel Wings | 👑 Golden Crown | 🐉 Dragon`
 
+## 🔌 REST API
+
+### Base URL
+```
+http://localhost:8888
+```
+
+### Endpoints
+
+**Get all cosmetics:**
+```bash
+GET /api/cosmetics
+```
+
+**Get player cosmetics:**
+```bash
+GET /api/player/{username}
+```
+
+**Equip cosmetic:**
+```bash
+POST /api/player/{username}/equip
+Content-Type: application/json
+
+{
+  "type": "wings|hat|pet",
+  "id": "cosmetic_id"
+}
+```
+
+**Server status:**
+```bash
+GET /api/status
+```
+
 ## 📁 Project Structure
 
 ```
 HYPE-CLIENT/
-├── pom.xml                          # Maven configuration
+├── pom.xml                                # Maven configuration
 ├── src/main/java/com/hypeclient/
-│   ├── HypeClientLauncher.java     # Main entry point
+│   ├── HypeClientLauncher.java           # Main entry point
+│   ├── api/
+│   │   └── CosmeticsAPIServer.java       # REST API Server (Port 8888)
 │   ├── auth/
-│   │   ├── MicrosoftAuth.java      # Microsoft OAuth
-│   │   └── OfflineAuth.java        # Offline mode
+│   │   ├── MicrosoftAuth.java            # Microsoft OAuth
+│   │   └── OfflineAuth.java              # Offline mode
 │   ├── cosmetics/
-│   │   ├── CosmeticManager.java    # Cosmetic manager
-│   │   ├── Wings.java               # Wings cosmetic
-│   │   ├── Hats.java                # Hats cosmetic
-│   │   └── Pets.java                # Pets cosmetic
+│   │   ├── CosmeticManager.java          # Cosmetic manager
+│   │   ├── Wings.java                    # Wings cosmetic
+│   │   ├── Hats.java                     # Hats cosmetic
+│   │   └── Pets.java                     # Pets cosmetic
 │   ├── discord/
-│   │   └── DiscordRPC.java         # Discord Rich Presence
+│   │   └── DiscordRPC.java               # Discord Rich Presence
 │   ├── launcher/
-│   │   └── MinecraftLauncher.java  # Minecraft launcher
+│   │   └── MinecraftLauncher.java        # Minecraft launcher
 │   └── ui/
-│       └── LauncherUI.java          # GUI (Swing)
+│       └── LauncherUI.java               # GUI (Swing)
+├── src/main/resources/
+│   └── logback.xml                       # Logging configuration
 └── README.md
 ```
 
@@ -111,6 +169,14 @@ Change in `MinecraftLauncher.java`:
 
 ```java
 private String gameVersion = "1.20.1"; // Change this
+```
+
+### API Server Port
+
+Change in `CosmeticsAPIServer.java`:
+
+```java
+private static final int PORT = 8888; // Change this
 ```
 
 ## 🔐 Authentication Details
@@ -143,6 +209,7 @@ Contributions welcome! Submit PRs with:
 - New cosmetics
 - Bug fixes
 - UI improvements
+- API enhancements
 
 ## 📄 License
 
@@ -168,6 +235,17 @@ This is a fan project. Use at your own risk. Not affiliated with Microsoft or Mi
 - Try offline mode
 - Check internet connection
 
+### API Server not responding?
+- Check if port 8888 is available
+- Ensure HypeClientLauncher started CosmeticsAPIServer
+- Check logs for errors
+
+## 📊 Build Status
+
+![Build Status](https://github.com/dawiofejm-hue/HYPE-CLIENT/actions/workflows/maven-publish.yml/badge.svg)
+
 ---
 
 **Made with ❤️ for Minecraft enthusiasts**
+
+**Version:** 1.0.0 | **Java:** 11+ | **Build:** Maven
